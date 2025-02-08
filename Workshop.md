@@ -267,9 +267,9 @@ O `CTest` é uma ferramenta integrada ao CMake para execução de testes, enquan
 
 Você pode automatizar a compilação e execução de testes utilizando o GitHub Actions.
 
-## 8.1. Exemplo de Workflow
+## 8.1. Exemplo de Workflow para testes
 
-Crie um arquivo em `.github/workflows/ci.yml`:
+Crie um arquivo em `.github/workflows/run-tests.yml`:
 
 ```yaml
 name: Compile and Run Tests
@@ -294,6 +294,60 @@ jobs:
         run: |
          cmake . -B build && cmake --build build
          ctest --test-dir build --output-on-failure
+```
+
+## 8.2. Exemplo de Workflow para Análise de Código
+
+Crie um arquivo chamado `.github/workflows/cpp-linter.yml` com o seguinte conteúdo:
+
+Este workflow utiliza a ação [cpp-linter-action](https://github.com/cpp-linter/cpp-linter-action) para realizar análise estática do código utilizando o Clang Format e o Clang Tidy.
+
+- **Clang Format:**
+  Formata o código conforme um estilo definido. Você pode personalizar a formatação criando um arquivo `.clang-format` com as regras desejadas.
+
+- **Clang Tidy:**
+  Realiza a análise estática do código em busca de problemas, como vazamentos de memória e variáveis não utilizadas. Para ajustar as regras, crie um arquivo `.clang-tidy` conforme necessário.
+
+```yaml
+name: C/C++ Linter
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    container:
+      image: rosicley/workshop-productivity
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate compilation database
+        run: cmake . -B build
+
+      - name: Run Clang Format and Clang Tidy
+        uses: cpp-linter/cpp-linter-action@v2.13.4
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          database: build/
+          files-changed-only: false
+          format-review: false
+          ignore: 'build|cmake-modules|docker'
+          passive-reviews: true
+          step-summary: true
+          style: 'file'
+          tidy-checks: ''
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          version: 19
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
 ```
 
 ---
