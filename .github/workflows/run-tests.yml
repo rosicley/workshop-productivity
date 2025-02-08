@@ -1,0 +1,23 @@
+name: Compile and Run Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    container:
+      image: rosicley/workshop-productivity
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          mkdir -p build && cd build
+          cmake .. && make
+          ctest --output-on-failure

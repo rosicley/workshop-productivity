@@ -1,0 +1,39 @@
+name: C/C++ Linter
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    container:
+      image: rosicley/workshop-productivity
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate compilation database
+        run: mkdir -p build && cd build && cmake .. && cd ..
+
+      - name: Run Clang Format and Clang Tidy
+        uses: cpp-linter/cpp-linter-action@v2.13.4
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          database: build/
+          files-changed-only: false
+          format-review: false
+          ignore: 'build|cmake-modules|docker'
+          passive-reviews: true
+          step-summary: true
+          style: 'file'
+          tidy-checks: ''
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          version: 19
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
