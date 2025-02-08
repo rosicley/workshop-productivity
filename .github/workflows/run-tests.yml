@@ -18,6 +18,5 @@ jobs:
 
       - name: Run tests
         run: |
-          mkdir -p build && cd build
-          cmake .. && make
-          ctest --output-on-failure
+          cmake . -B build && cmake --build build
+          ctest --test-dir build --output-on-failure

@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate compilation database
-        run: mkdir -p build && cd build && cmake .. && cd ..
+        run: cmake . -B build
 
       - name: Run Clang Format and Clang Tidy
         uses: cpp-linter/cpp-linter-action@v2.13.4
