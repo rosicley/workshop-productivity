@@ -1,0 +1,55 @@
+Checks: >
+  boost-*,
+  bugprone-*,
+  performance-*,
+  readability-*,
+  portability-*,
+  modernize-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*
+
+WarningsAsErrors: "*"
+HeaderFilterRegex: ".*\\.(cpp|c|hpp|h)$"
+AnalyzeTemporaryDtors: false
+FormatStyle: file
+
+CheckOptions:
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  - key: readability-identifier-naming.MemberCase
+    value: CamelCase
+  - key: readability-identifier-naming.ParameterCase
+    value: camelCase
+  - key: readability-identifier-naming.UnionCase
+    value: CamelCase
+  - key: readability-identifier-naming.VariableCase
+    value: camelCase
+
+  - key: performance-move-const-arg.WarnOn
+    value: true
+  - key: performance-unnecessary-value-param.WarnOn
+    value: true
+
+  - key: modernize-loop-convert.WarnOn
+    value: true
+
+  - key: readability-else-after-return.WarnOn
+    value: true
+
+  - key: cppcoreguidelines-init-variables.Strict
+    value: true
+  - key: cppcoreguidelines-pro-type-member-init.WarnOn
+    value: true
+
+  - key: clang-analyzer-cplusplus.NewDeleteLeaks
+    value: true
+  - key: clang-analyzer-cplusplus.SmartPtr
+    value: true
+  - key: clang-analyzer-deadcode.DeadStores
+    value: true
+  - key: clang-analyzer-optin.performance.Padding
+    value: true

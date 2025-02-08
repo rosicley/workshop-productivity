@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+  workshop:
+    image: workshop
+    container_name: workshop-cont
+    user: workshop
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app/workshop
+      - /tmp/.X11-unix/:/tmp/.X11-unix/
+    environment:
+      - DISPLAY=${DISPLAY}
