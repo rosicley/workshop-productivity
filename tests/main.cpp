@@ -1,6 +1,6 @@
 #include <catch2/catch_all.hpp>
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include <fmt/format.h>
 #include <string>
 
