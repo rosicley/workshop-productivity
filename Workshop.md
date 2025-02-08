@@ -61,13 +61,11 @@ Para participar do workshop, será necessário instalar os seguintes pacotes:
 - `cmake`
 - `make`
 
-> **Observação:** Inicialmente, vamos instalar apenas `git`, `docker` e `docker-compose`.
-
 Execute os comandos abaixo:
 
 ```bash
 sudo apt-get update -y
-sudo apt-get install -y git docker docker-compose
+sudo apt-get install -y git docker docker-compose cmake make
 
 # Adicione seu usuário ao grupo do Docker para não precisar usar 'sudo'
 sudo groupadd docker
@@ -81,7 +79,7 @@ newgrp docker
 - [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [Catch2](https://github.com/catchorg/Catch2)
 
-> **Observação:** As bibliotecas `fmt`, `Eigen` e `Catch2` serão gerenciadas via CMake ou Docker, conforme as instruções a seguir.
+> **Observação:** No Docker disponibilizado, as bibliotecas `fmt`, `Eigen` e `Catch2` já estão instaladas.
 
 ---
 
@@ -163,16 +161,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt Eigen3::Eigen)
 
 O Docker permite criar um ambiente de desenvolvimento pré-configurado, evitando problemas com dependências.
 
-## 5.1. Dev Container no VS Code
-
-1. Instale a extensão [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
-2. No VS Code, clique no ícone do canto inferior esquerdo e selecione `Dev Containers: Reopen in Container`.
-3. *Dica:* Se estiver utilizando o cluster e acabou de configurar o Docker, reinicie o VS Code para que ele reconheça as permissões do grupo do Docker.
-4. Dentro do container, instale também a extensão [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) e compile o projeto conforme descrito anteriormente.
-
 ## 5.2. Usando o Docker Compose via **Terminal**
 
-Se preferir acessar o container pelo terminal, execute:
+Utilize o Docker Compose para criar um container com as ferramentas necessárias e executar o código demo.
 
 ```bash
 # Inicializa o container usando docker-compose
@@ -184,6 +175,15 @@ cmake . -B build && cmake --build build
 # Execute o projeto:
 ./build/workshop
 ```
+
+## 5.1. Dev Container no VS Code
+
+Se preferir acessar o VS Code diretamente no container, siga os passos abaixo:
+
+1. Instale a extensão [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+2. No VS Code, clique no ícone do canto inferior esquerdo e selecione `Dev Containers: Reopen in Container`.
+3. *Dica:* Se estiver utilizando o cluster e acabou de configurar o Docker, reinicie o VS Code para que ele reconheça as permissões do grupo do Docker.
+4. Dentro do container, instale também a extensão [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) e compile o projeto conforme descrito anteriormente.
 
 ---
 
