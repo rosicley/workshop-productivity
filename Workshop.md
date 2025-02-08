@@ -1,6 +1,6 @@
 # 1. Workshop: Melhorando a Produtividade
 
-Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de trabalho. Abordaremos o uso de clusters, integração com VS Code, CMake, Docker, testes automatizados e convenções de commits.
+Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de trabalho. Abordaremos o uso do cluster, integração com VS Code, CMake, Docker, testes automatizados e convenções de commits.
 
 ---
 
@@ -79,7 +79,7 @@ newgrp docker
 - [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [Catch2](https://github.com/catchorg/Catch2)
 
-> **Observação:** No Docker disponibilizado, as bibliotecas `fmt`, `Eigen` e `Catch2` já estão instaladas.
+> **Observação:** No Docker disponibilizado, as bibliotecas `fmt`, `Eigen` e `Catch2` já estão instaladas. Imagem Docker criada para o workshop: [rosicley/workshop-productivity](https://hub.docker.com/r/rosicley/workshop-productivity/tags).
 
 ---
 
