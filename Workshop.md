@@ -70,7 +70,7 @@ sudo apt-get update -y
 sudo apt-get install -y git docker docker-compose
 
 # Adicione seu usuário ao grupo do Docker para não precisar usar 'sudo'
-sudo groupadd docker         # (Caso o grupo 'docker' ainda não exista)
+sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 ```
@@ -81,7 +81,7 @@ newgrp docker
 - [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [Catch2](https://github.com/catchorg/Catch2)
 
-> **Observação:** As bibliotecas `fmt` e `Eigen` serão gerenciadas via CMake ou Docker, conforme as instruções a seguir.
+> **Observação:** As bibliotecas `fmt`, `Eigen` e `Catch2` serão gerenciadas via CMake ou Docker, conforme as instruções a seguir.
 
 ---
 
@@ -92,7 +92,7 @@ newgrp docker
 Clone o repositório do workshop:
 
 ```bash
-git clone <URL_DO_REPOSITÓRIO>
+git clone git@github.com:rosicley/workshop-productivity.git
 ```
 
 Em seguida, acesse o diretório do projeto:
@@ -143,7 +143,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt Eigen3::Eigen)
    cmake --build build
    ```
 
-> **Atenção:** Se você não tiver as bibliotecas `fmt` e `Eigen` instaladas localmente, a compilação poderá falhar. Nesse caso, siga para a seção Docker.
+> ⚠️ **Atenção:** Se você não tiver as bibliotecas `fmt`, `Eigen` e `Catch2` instaladas localmente, a compilação poderá falhar. Nesse caso, siga para a seção Docker.
 
 3. Execute o projeto:
 
@@ -267,9 +267,9 @@ O `CTest` é uma ferramenta integrada ao CMake para execução de testes, enquan
 
 Você pode automatizar a compilação e execução de testes utilizando o GitHub Actions.
 
-## 8.1. Exemplo de Workflow
+## 8.1. Exemplo de Workflow para Execução de Testes
 
-Crie um arquivo em `.github/workflows/ci.yml`:
+Crie um arquivo em `.github/workflows/run-tests.yml`:
 
 ```yaml
 name: Compile and Run Tests
@@ -296,11 +296,65 @@ jobs:
          ctest --test-dir build --output-on-failure
 ```
 
+## 8.2. Exemplo de Workflow para Análise de Código
+
+Para análise estática do nosso código, vamos utilizar a ação [cpp-linter-action](https://github.com/cpp-linter/cpp-linter-action), que utiliza o Clang Format e o Clang Tidy.
+
+- **Clang Format:**
+  Formata o código conforme um estilo definido. Você pode personalizar a formatação criando um arquivo `.clang-format` com as regras desejadas.
+
+- **Clang Tidy:**
+  Realiza a análise estática do código em busca de problemas, como vazamentos de memória e variáveis não utilizadas. Para ajustar as regras, crie um arquivo `.clang-tidy` conforme necessário.
+
+Crie um arquivo chamado `.github/workflows/cpp-linter.yml` com o seguinte conteúdo:
+
+```yaml
+name: C/C++ Linter
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cpp-linter:
+    runs-on: ubuntu-latest
+    container:
+      image: rosicley/workshop-productivity
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate compilation database
+        run: cmake . -B build
+
+      - name: Run Clang Format and Clang Tidy
+        uses: cpp-linter/cpp-linter-action@v2.13.4
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          database: build/
+          files-changed-only: false
+          format-review: false
+          ignore: 'build|cmake-modules|docker'
+          passive-reviews: true
+          step-summary: true
+          style: 'file'
+          tidy-checks: ''
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          version: 19
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
+```
+
 ---
 
 # 9. Conventional Commits
 
-Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) para padronizar as mensagens de commit.
+Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) para padronizar as mensagens de commit, facilitando a rastreabilidade, a revisão do código e a colaboração na equipe.
 
 ## 9.1. Exemplos:
 
@@ -321,3 +375,8 @@ Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-
   git commit -m "refactor: Refatora código em W"
   git commit -m "test: Adiciona testes para V"
   ```
+
+> 📌 **Dicas Finais:**
+> - **Use Pull Requests:** Evite realizar commits diretos na branch principal. Utilize pull requests para integrar as alterações, garantindo revisão e qualidade no código.
+> - **Commits Granulares:** Faça commits pequenos e focados em uma única tarefa ou correção. Commits extensos podem dificultar a identificação de problemas e a revisão do histórico.
+> - **Boas Práticas:** Escreva mensagens de commit claras e descritivas e mantenha uma rotina de revisão de código. Essas práticas não só melhoram a organização do projeto, mas também aumentam a produtividade da equipe.
