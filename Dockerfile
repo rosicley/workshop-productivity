@@ -1,5 +1,5 @@
 # Use the built image as the base image
-FROM workshop-productivity:latest
+FROM rosicley/workshop-productivity:latest
 
 # Copy files
 COPY . /app/workshop

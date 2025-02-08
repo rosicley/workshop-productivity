@@ -199,7 +199,7 @@ cmake . -B build && cmake --build build
 
 ---
 
-# 7. Testes Automatizados com CTest e Catch2 (Bônus)
+# 7. Testes Automatizados com CTest e Catch2
 
 O `CTest` é uma ferramenta integrada ao CMake para execução de testes, enquanto o `Catch2` é uma biblioteca para testes unitários em C++.
 
