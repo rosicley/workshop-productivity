@@ -1,18 +1,20 @@
 # 1. Workshop: Melhorando a Produtividade
 
-Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de trabalho. Abordaremos o uso do cluster, integração com VS Code, CMake, Docker, testes automatizados e convenções de commits.
+Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de trabalho. Abordaremos o acesso remoto via VS Code, extensões úteis, CMake, Docker, testes automatizados, convenções de commits e cálculos simbólicos com Sympy.
 
 ---
 
-# 2. Utilizando um Cluster (Opcional)
+# 2. Acesso Remoto com o VS Code
 
-*Esta seção é opcional para quem deseja utilizar um cluster durante o workshop.*
+*Esta seção é opcional para quem deseja utilizar um cluster ou conectar-se remotamente a uma máquina durante o workshop.*
 
 ## 2.1. Configuração via SSH
 
-1. **Configure o arquivo `~/.ssh/config`:**
+1. **Configure o arquivo `config`:**
+   Adicione a seguinte configuração (substitua `ip-do-servidor`, `user` e `porta` pelos valores corretos):
 
-   Adicione a seguinte configuração (substitua `ip-do-cluster`, `user` e `porta` pelos valores corretos):
+   - **No Linux:** o arquivo fica em `~/.ssh/config`.
+   - **No Windows:** o arquivo fica em `C:\Users\seu-usuario\.ssh\config`.
 
    ```bash
    Host cluster-set
@@ -21,7 +23,7 @@ Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de traba
      Port porta
    ```
 
-2. **Conecte-se ao cluster via terminal:**
+2. **Conecte-se remotamente via SSH:**
 
    ```bash
    ssh cluster-set
@@ -38,7 +40,7 @@ Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de traba
 
 2. **Instale a extensão [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh).**
 
-3. **Conecte-se ao cluster:**
+3. **Conecte-se via VS Code:**
    - Clique no ícone no canto inferior esquerdo e selecione `Remote-SSH: Connect to Host...`.
    - Escolha `cluster-set` e digite a senha quando solicitado.
    - Agora você está conectado ao cluster e pode editar os arquivos remotamente. Basta clonar seu repositório e abrir a pasta com `Open Folder`.
@@ -79,7 +81,8 @@ newgrp docker
 - [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [Catch2](https://github.com/catchorg/Catch2)
 
-> **Observação:** No Docker disponibilizado, as bibliotecas `fmt`, `Eigen` e `Catch2` já estão instaladas. Imagem Docker criada para o workshop: [rosicley/workshop-productivity](https://hub.docker.com/r/rosicley/workshop-productivity/tags).
+> **Observação:** Na imagem Docker disponibilizada, as bibliotecas `fmt`, `Eigen` e `Catch2` já estão instaladas.
+> Imagem Docker para o workshop: [rosicley/workshop-productivity](https://hub.docker.com/r/rosicley/workshop-productivity/tags).
 
 ---
 
@@ -129,21 +132,22 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt Eigen3::Eigen)
 
 ### 4.2.2. Compilando pelo Terminal
 
-1. Crie um diretório de compilação e configure o projeto:
+1. **Gere a pasta de build automaticamente:**
+   O CMake cria o diretório de build se ele não existir (requer versão 3.13 ou superior):
 
    ```bash
    cmake . -B build
    ```
 
-2. Compile o projeto:
+2. **Compile o projeto:**
 
    ```bash
    cmake --build build
    ```
 
-> ⚠️ **Atenção:** Se você não tiver as bibliotecas `fmt`, `Eigen` e `Catch2` instaladas localmente, a compilação poderá falhar. Nesse caso, siga para a seção Docker.
+> ⚠️ **Atenção:** Se você não tiver as bibliotecas `fmt`, `Eigen` e `Catch2` instaladas localmente, a compilação poderá falhar. Nesse caso, utilize a seção Docker.
 
-3. Execute o projeto:
+3. **Execute o projeto:**
 
    ```bash
    ./build/workshop
@@ -153,17 +157,17 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt Eigen3::Eigen)
 
 1. Instale a extensão [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools).
 2. Utilize as opções da extensão para compilar e executar o projeto diretamente no VS Code.
-3. Você também pode depurar o código adicionando breakpoints na interface do VS Code.
+3. Você também pode depurar o código adicionando breakpoints pela interface do VS Code.
 
 ---
 
 # 5. Utilizando o Docker
 
-O Docker permite criar um ambiente de desenvolvimento pré-configurado, evitando problemas com dependências.
+O Docker permite criar um ambiente de desenvolvimento pré-configurado, eliminando problemas com dependências.
 
-## 5.2. Usando o Docker Compose via **Terminal**
+## 5.1. Usando o Docker Compose via Terminal
 
-Utilize o Docker Compose para criar um container com as ferramentas necessárias e executar o código demo.
+Utilize o Docker Compose para criar um container com as ferramentas necessárias e executar o código demo:
 
 ```bash
 # Inicializa o container usando docker-compose
@@ -176,37 +180,36 @@ cmake . -B build && cmake --build build
 ./build/workshop
 ```
 
-## 5.1. Dev Container no VS Code
-
-Se preferir acessar o VS Code diretamente no container, siga os passos abaixo:
+## 5.2. Dev Container no VS Code
 
 1. Instale a extensão [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 2. No VS Code, clique no ícone do canto inferior esquerdo e selecione `Dev Containers: Reopen in Container`.
-3. *Dica:* Se estiver utilizando o cluster e acabou de configurar o Docker, reinicie o VS Code para que ele reconheça as permissões do grupo do Docker.
+3. *Dica:* Se ocorrer algum erro relacionado a permissões, reinicie o VS Code para que ele reconheça as configurações do grupo do Docker.
 4. Dentro do container, instale também a extensão [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) e compile o projeto conforme descrito anteriormente.
 
 ---
 
-# 6. Extensões Úteis para o VS Code
+# 6. Outras extensões Úteis para o VS Code
 
 - **Code Spell Checker:** [Instalar](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) – para correção ortográfica.
 - **C/C++ Extension Pack:** [Instalar](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) – para desenvolvimento em C/C++.
+- **Makefile Tools:** [Instalar](https://marketplace.visualstudio.com/items?itemName=ms-vscode.makefile-tools) – para edição de arquivos Makefile.
 - **Doxygen:** [Instalar](https://marketplace.visualstudio.com/items?itemName=bbenoist.Doxygen) – para documentação de código.
 - **GitHub Copilot:** [Instalar](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) – para sugestões de código.
   Aproveite os benefícios do [GitHub Education](https://education.github.com/discount_requests/application) para acessar o GitHub Copilot Pro.
 - **SonarQube:** [Instalar](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode) – para análise de código.
-- **Git Lens:** [Instalar](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) – para visualização de informações do Git.
+- **Git Lens:** [Instalar](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) – para visualização detalhada do histórico do Git.
 
 ---
 
 # 7. Testes Automatizados com CTest e Catch2
 
-O `CTest` é uma ferramenta integrada ao CMake para execução de testes, enquanto o `Catch2` é uma biblioteca para testes unitários em C++.
+O `CTest` é integrado ao CMake para a execução de testes, e o `Catch2` é uma biblioteca para testes unitários em C++.
 
 ## 7.1. Adicionando Testes ao Projeto
 
 1. **Crie um arquivo de teste:**
-   Por exemplo, `tests/main.cpp`, contendo os testes utilizando o `Catch2`.
+   Por exemplo, `tests/main.cpp`, contendo os testes com `Catch2`.
 
 2. **Exemplo de Teste com Catch2:**
 
@@ -265,9 +268,9 @@ O `CTest` é uma ferramenta integrada ao CMake para execução de testes, enquan
 
 # 8. Integração com GitHub Actions (CI/CD)
 
-Você pode automatizar a compilação e execução de testes utilizando o GitHub Actions.
+O GitHub Actions permite automatizar a compilação, testes e análises do código.
 
-## 8.1. Exemplo de Workflow para Execução de Testes
+## 8.1. Workflow para Execução de Testes
 
 Crie um arquivo em `.github/workflows/run-tests.yml`:
 
@@ -292,21 +295,21 @@ jobs:
 
       - name: Build and Run Tests
         run: |
-         cmake . -B build && cmake --build build
-         ctest --test-dir build --output-on-failure
+          cmake . -B build && cmake --build build
+          ctest --test-dir build --output-on-failure
 ```
 
-## 8.2. Exemplo de Workflow para Análise de Código
+## 8.2. Workflow para Análise de Código
 
-Para análise estática do nosso código, vamos utilizar a ação [cpp-linter-action](https://github.com/cpp-linter/cpp-linter-action), que utiliza o Clang Format e o Clang Tidy.
+Utilize a ação [cpp-linter-action](https://github.com/cpp-linter/cpp-linter-action) para análise estática com Clang Format e Clang Tidy.
 
 - **Clang Format:**
-  Formata o código conforme um estilo definido. Você pode personalizar a formatação criando um arquivo `.clang-format` com as regras desejadas.
+  Formata o código conforme um estilo definido (configure com um arquivo `.clang-format`).
 
 - **Clang Tidy:**
-  Realiza a análise estática do código em busca de problemas, como vazamentos de memória e variáveis não utilizadas. Para ajustar as regras, crie um arquivo `.clang-tidy` conforme necessário.
+  Analisa o código em busca de problemas (configure com um arquivo `.clang-tidy`).
 
-Crie um arquivo chamado `.github/workflows/cpp-linter.yml` com o seguinte conteúdo:
+Crie um arquivo em `.github/workflows/cpp-linter.yml`:
 
 ```yaml
 name: C/C++ Linter
@@ -354,9 +357,12 @@ jobs:
 
 # 9. Conventional Commits
 
-Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) para padronizar as mensagens de commit, facilitando a rastreabilidade, a revisão do código e a colaboração na equipe.
+Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) para padronizar as mensagens de commit, facilitando a rastreabilidade, a revisão do código e a colaboração.
 
-## 9.1. Exemplos:
+> 📌 **Outras Dicas:**
+> - **Use Pull Requests:** Evite commits diretos na branch principal. Utilize pull requests para integrar as alterações, garantindo revisão e qualidade.
+> - **Commits Granulares:** Faça commits pequenos e focados em uma única tarefa ou correção. Commits extensos dificultam a identificação de problemas e a revisão do histórico.
+> - **Boas Práticas:** Escreva mensagens de commit claras e descritivas.
 
 - **Evite:**
   ```bash
@@ -376,7 +382,32 @@ Utilize o padrão [Conventional Commits](https://www.conventionalcommits.org/pt-
   git commit -m "test: Adiciona testes para V"
   ```
 
-> 📌 **Dicas Finais:**
-> - **Use Pull Requests:** Evite realizar commits diretos na branch principal. Utilize pull requests para integrar as alterações, garantindo revisão e qualidade no código.
-> - **Commits Granulares:** Faça commits pequenos e focados em uma única tarefa ou correção. Commits extensos podem dificultar a identificação de problemas e a revisão do histórico.
-> - **Boas Práticas:** Escreva mensagens de commit claras e descritivas e mantenha uma rotina de revisão de código. Essas práticas não só melhoram a organização do projeto, mas também aumentam a produtividade da equipe.
+---
+
+# 10. Sympy: Cálculos Simbólicos
+
+O [Sympy](https://www.sympy.org/) é uma biblioteca Python para matemática simbólica, permitindo realizar operações como integração, diferenciação, simplificação de expressões, entre outras. ***Ele também possibilita exportar expressões simbólicas para código C++.***
+
+**Exemplo:**
+
+```python
+from sympy import symbols, diff, cxxcode
+
+x1, x2 = symbols('x1 x2')
+
+y1 = x1**2.0 + 3.0 * x1 * x2 + 2.0
+y2 = 2.0 * x1 + x2**3.0 + 3.0 * x1 * x2 + 1.0
+
+cxx_standard = "c++17"
+
+print(f"dy1_dx1 = {cxxcode(diff(y1, x1), standard=cxx_standard)}")
+print(f"dy1_dx2 = {cxxcode(diff(y1, x2), standard=cxx_standard)}")
+print(f"dy2_dx1 = {cxxcode(diff(y2, x1), standard=cxx_standard)}")
+print(f"dy2_dx2 = {cxxcode(diff(y2, x2), standard=cxx_standard)}")
+
+# Saída esperada:
+# dy1_dx1 = 2.0*std::pow(x1, 1.0) + 3.0*x2
+# dy1_dx2 = 3.0*x1
+# dy2_dx1 = 3.0*x2 + 2.0
+# dy2_dx2 = 3.0*x1 + 3.0*std::pow(x2, 2.0)
+```
