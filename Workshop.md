@@ -412,3 +412,28 @@ print(f"dy2_dx2 = {cxxcode(diff(y2, x2), standard=cxx_standard)}")
 # dy2_dx1 = 3.0*x2 + 2.0
 # dy2_dx2 = 3.0*x1 + 3.0*std::pow(x2, 2.0)
 ```
+
+---
+
+# 11. Inteligência Artificial
+
+Aproveite as ferramentas de Inteligência Artificial para aumentar sua produtividade e otimizar seu fluxo de trabalho. Abaixo, confira alguns exemplos:
+
+- [ChatGPT](https://chatgpt.com/)
+- [DeepSeek](https://chat.deepseek.com/)
+- [Claude](https://claude.ai/)
+
+Além dessas ferramentas online, você também pode executar modelos de IA pré-treinados localmente com o [`ollama`](https://ollama.com/).
+
+Modelos disponíveis: [ollama.com/models](https://ollama.com/models).
+
+```bash
+# Instalação do ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Execução de um modelo deepseek
+ollama run deepseek-r1:1.5b
+
+# Execução de um modelo codellama
+ollama run codellama:7b
+```
