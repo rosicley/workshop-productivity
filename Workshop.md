@@ -57,6 +57,7 @@ Este workshop apresenta práticas e ferramentas para otimizar seu fluxo de traba
 
 Para participar do workshop, será necessário instalar os seguintes pacotes:
 
+- `build-essential`
 - `git`
 - `docker`
 - `docker-compose`
@@ -67,7 +68,7 @@ Execute os comandos abaixo:
 
 ```bash
 sudo apt-get update -y
-sudo apt-get install -y git docker docker-compose cmake make
+sudo apt-get install -y build-essential git docker docker-compose cmake make
 
 # Adicione seu usuário ao grupo do Docker para não precisar usar 'sudo'
 sudo groupadd docker
@@ -189,7 +190,7 @@ cmake . -B build && cmake --build build
 
 ---
 
-# 6. Outras extensões Úteis para o VS Code
+# 6. Outras Extensões Úteis para o VS Code
 
 - **Code Spell Checker:** [Instalar](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) – para correção ortográfica.
 - **C/C++ Extension Pack:** [Instalar](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) – para desenvolvimento em C/C++.
